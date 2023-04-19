@@ -14,6 +14,7 @@ def func(a,b):
     list_ = [i for i in a if i in b]
     print(f"result= {list_}")
     return (a, b)
+
 func(a, b)
 
 #  Объявить функцию, которая принимает в себя любое количество словарей и возвращает единый словарь,
