@@ -21,15 +21,15 @@ class Car:
         print("Stop")
 
     def get_birthday(self):
-        try:
-            return 1 + self.age
-        except Exception:
-            print("атрибут age не задан")
+        if self.age is None:
+            raise Exception("атрибут age не задан")
+        return self.age + 1
 
-car_1=Car("BMW","White")
+
+car_1=Car(model="BMW", age=2000, color="White")
 car_1.move()
 car_1.stop()
-car_1.get_birthday()
+print(car_1.get_birthday())
 
 
 # Задача 2. Есть csv файл со списком людей, нужно прочитать его и преобразовать
