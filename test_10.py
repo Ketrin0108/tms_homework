@@ -60,10 +60,11 @@ class Shop:
 
 
 class Basket:
-    def __init__(self,id,new_basket):
-        self.id=id
-        self.new_basket=new_basket
-        pass
+    def __init__(self,list_):
+        self.list_=list_
+
+    def add_basket(self):
+        return self.list_.append(Product)
 
 class Buyer:
 
@@ -71,28 +72,28 @@ class Buyer:
         self.id=id
         self.money=money
         self.list_product=list_product
-
-        def make_basket(self):   #смотрит есть ли продукт в магазине и добовляет в новую корзину
-            for product in Shop.products:
-                if Product.name in Buyer.list_product:
-                self.new_basket.append(product)
+        self.basket=Basket()
 
 
+    def add_basket(self):   #смотрит есть ли продукт в магазине и добовляет в новую корзину
+        for product in Shop.products:
+            for bayer_product in self.list_product:
+                if self.money >= self.price:
+                    self.list_.append(bayer_product)
 
 
-
-shop_1=Shop(products=('молоко','сыр', 'хлеб', 'рыба','мясо','творог','банан','мука'))
-print(shop_1.products)
 
 buyer=Buyer(id='user1',money=50,list_product=('творог',',банан','мука'))
 
+products=['молоко','сыр','хлеб','рыба','мясо','творог','банан','мука']
+Shop(products)
+print(Shop().products)
+
 молоко =Product(id=1,name='Молоко',price=2,amount=5)
 сыр =Product(id=2,name='Сыр',price=5,amount=10)
-хдеб =Product(id=3,name='Хлеб',price=1,amount=10)
+хлеб =Product(id=3,name='Хлеб',price=1,amount=10)
 рыба=Product(id=4,name='Рыба',price=10,amount=4)
 мясо=Product(id=5,name='Мясо',price=15,amount=6)
 творог=Product(id=6,name='Творог',price=6,amount=10)
 банан=Product(id=7,name='Банан',price=4,amount=10)
 мука=Product(id=8,name='Мука',price=3,amount=5)
-
-print(Shop(products))
