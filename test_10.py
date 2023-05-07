@@ -86,8 +86,8 @@ class Buyer:
 buyer=Buyer(id='user1',money=50,list_product=('творог',',банан','мука'))
 
 products=['молоко','сыр','хлеб','рыба','мясо','творог','банан','мука']
-Shop(products)
-print(Shop().products)
+shop_1=Shop(products)
+print(shop_1)
 
 молоко =Product(id=1,name='Молоко',price=2,amount=5)
 сыр =Product(id=2,name='Сыр',price=5,amount=10)
