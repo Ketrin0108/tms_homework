@@ -31,12 +31,12 @@ from abc import ABC, abstractmethod
 
 class Product:
 
-    def __init__(self,id,name,price,amount):
+    def __init__(self,id=None,name=None,price=0,amount=0):
         self.id=id
         self.name=name
         self.price=price
         self.amount=amount
-        amount -= 1
+
 
     @abstractmethod
     def add_cost(self):
@@ -54,46 +54,52 @@ class Shop:
             cls.shop = super(Shop, cls).__new__(cls)
         return cls.shop
 
-    def __init__(self,products):
+    def __init__(self, products):
         self.products=products
 
 
-
 class Basket:
-    def __init__(self,list_):
-        self.list_=list_
+    def __init__(self):
+        self.list_=[]
 
-    def add_basket(self):
-        return self.list_.append(Product)
+    def add_basket(self,product):
+        self.list_.append(product)
 
 class Buyer:
 
-    def __init__(self,id,money,list_product):
+    def __init__(self,id,money,list_product,basket=None):
         self.id=id
         self.money=money
         self.list_product=list_product
-        self.basket=Basket()
+        if basket is None:
+            self.basket = Basket()
+        else:
+            self.basket = basket
 
 
     def add_basket(self):   #смотрит есть ли продукт в магазине и добовляет в новую корзину
-        for product in Shop.products:
+        for product in Shop().products:
             for bayer_product in self.list_product:
-                if self.money >= self.price:
-                    self.list_.append(bayer_product)
+                if buyer_product.name == product.name and self.money >= product.price:
+                    self.basket.add_basket(buyer_product)
+                    self.money -= product.price
 
 
 
-buyer=Buyer(id='user1',money=50,list_product=('творог',',банан','мука'))
+products = [
+    Product(id=1, name='Молоко', price=2, amount=5),
+    Product(id=2, name='Сыр', price=5, amount=10),
+    Product(id=3, name='Хлеб', price=1, amount=10),
+    Product(id=4, name='Рыба', price=10, amount=4),
+    Product(id=5, name='Мясо', price=15, amount=6),
+    Product(id=6, name='Творог', price=6, amount=10),
+    Product(id=7, name='Банан', price=4, amount=10),
+    Product(id=8, name='Мука', price=3, amount=5)
+]
 
-products=['молоко','сыр','хлеб','рыба','мясо','творог','банан','мука']
-Shop(products)
-print(Shop().products)
 
-молоко =Product(id=1,name='Молоко',price=2,amount=5)
-сыр =Product(id=2,name='Сыр',price=5,amount=10)
-хлеб =Product(id=3,name='Хлеб',price=1,amount=10)
-рыба=Product(id=4,name='Рыба',price=10,amount=4)
-мясо=Product(id=5,name='Мясо',price=15,amount=6)
-творог=Product(id=6,name='Творог',price=6,amount=10)
-банан=Product(id=7,name='Банан',price=4,amount=10)
-мука=Product(id=8,name='Мука',price=3,amount=5)
+
+buyer = Buyer(id='user1', money=50, list_product=[Product.new_product(6, 'Творог', 6, 1), Product.new_product(7, 'Банан', 4, 1)])
+buyer.add_basket()
+print(buyer.basket.list_)
+print(buyer.money)
