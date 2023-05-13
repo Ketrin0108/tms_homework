@@ -49,13 +49,13 @@ class Product:
 
 class Shop:
 
-    def __new__(cls): # new управляет созданием нового экземпляра класса
+    def __new__(cls, *args): # new управляет созданием нового экземпляра класса
         if not hasattr(cls, 'shop'):
             cls.shop = super(Shop, cls).__new__(cls)
         return cls.shop
 
-    def __init__(self, products):
-        self.products=products
+    def __init__(self, products=None):
+        self.products=products or []
 
 
 class Basket:
@@ -76,13 +76,19 @@ class Buyer:
         else:
             self.basket = basket
 
-
-    def add_basket(self):   #смотрит есть ли продукт в магазине и добовляет в новую корзину
-        for product in Shop().products:
-            for bayer_product in self.list_product:
-                if buyer_product.name == product.name and self.money >= product.price:
-                    self.basket.add_basket(buyer_product)
-                    self.money -= product.price
+    def add_basket(self):  # смотрит есть ли продукт в магазине и добовляет в новую корзину
+        for buyer_product in self.list_product:
+            for product in Shop().products:
+                if buyer_product.name == product.name:
+                    if self.money >= product.price:
+                        self.basket.add_basket(buyer_product)
+                        self.money -= product.price
+                        product.amount -= 1
+                        break
+                    else:
+                        print(f"{self.id} не хватает денег на {product.name}")
+            else:
+                print(f"{self.id} продукта {buyer_product.name} нет в магазине")
 
 
 
@@ -97,7 +103,8 @@ products = [
     Product(id=8, name='Мука', price=3, amount=5)
 ]
 
-
+shop=Shop(products)
+print(Shop().products)
 
 buyer = Buyer(id='user1', money=50, list_product=[Product.new_product(6, 'Творог', 6, 1), Product.new_product(7, 'Банан', 4, 1)])
 buyer.add_basket()
