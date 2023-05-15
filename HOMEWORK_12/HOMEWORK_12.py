@@ -15,52 +15,51 @@
 # - create_tiger(cls, name)
 
 class Zoo:
-    def __init__(self, name, list_animal):
+    def __init__(self, name, animals):
         self.name = name
-        self.list_animal= list_animal
-        self.list_=[]
+        self.animals= animals
         self.index = 0
 
     def __len__(self):
-        return len(self.list_animal)
+        return len(self.animals)
 
     def __iter__(self): #иттератор
         return self
 
     def __next__(self):
-        if self.index < len(self.list_animal):
-            result = self.list_animal[self.index]
+        if self.index < len(self.animals):
+            result = self.animals[self.index]
             self.index += 1
             return result
         raise StopIteration
 
 
     def add_zoo_animal(self, animal): #метод append добавить животное
-        self.list_animal.append(animal)
+        self.animals.append(animal)
 
     def __getitem__(self, item): # вызываю метод магический метод getitem
-        return self.list_animal[item]
+        return self.animals[item]
 
-    def find(self, id):
-        for animal in self.list_animal:
+
+    def get_by_id(self, id):
+        for animal in self.animals:
             if animal.id == id:
                 return animal
         return None
 
-
-    def delete_zoo(self, animal_id): # метод удалить животное по id
-        for animal in self.list_animal:
+    def delete_by_id(self, animal_id): # метод удалить животное по id
+        for animal in self.animals:
             if animal.id == animal_id:
-                self.list_animal.remove(animal)
+                self.animals.remove(animal)
                 break
-            else:
-                print(f"Животное с id {animal_id} не найдено в зоопарке")
+        else:
+            print(f"Животное с id {animal_id} не найдено в зоопарке")
 
     def __str__(self):
-        return f"Зоопарк:  {self.name} имеет {len(self.list_animal)} животных"
+        return f"Зоопарк:  {self.name} имеет {len(self.animals)} животных"
 
 class Animal:
-    def __init__(self, id, name, animal_type, age):
+    def __init__(self, id, name, animal_type, age=0):
         self.id = id
         self.name = name
         self.animal_type = animal_type
@@ -107,10 +106,12 @@ print(zoo[1].name)
 for animal in zoo: #проверяю доступ к элементам зоопарка через итератор
     print(animal.name)
 
-print(zoo.find(1).name) #нахожу животное по id
+print(zoo.get_by_id(1).name) #нахожу животное по id
 
-zoo.delete_zoo(1) #удаляю животное по id
+zoo.delete_by_id(3) #удаляю животное по id
+zoo.delete_by_id(2)
 
 print(len(zoo)) #проверяю количество животных в зоопарке после удадения
 
 print(zoo)
+
