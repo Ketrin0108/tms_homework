@@ -5,15 +5,15 @@
 # добавить возможность получения todo по id, а также добавить возможность
 # сериализации и десериализации (запись и чтение из json)
 
-import requests
 from dotenv import load_dotenv
+import os
+import requests
 import json
 
 load_dotenv()
-URL = "https://jsonplaceholder.typicode.com/todos"
-response = requests.get(URL)
-todos_json = response.json()
-print(response.json())
+
+URL= os.environ.get("URL")
+
 
 
 class Todo:
@@ -30,6 +30,8 @@ class Todo:
 class Todos:
     def __init__(self):
         self.todos = []
+        for todo in requests.get(URL).json():
+            self.todos.append(Todo(todo_id = todo['id'], title = todo['title'],completed = todo['completed']))
         self.current = 0
 
     def __len__(self):
@@ -61,19 +63,21 @@ class Todos:
                 todo_data['title'],
                 todo_data['completed']
             )
+            self.todos.append(todo)
 
+    def serialis(self):
+        with open(todo_file.json, "w+") as write_file:
+            json.dump(self.todos, write_file)
+
+    def desirialis(self):
+        with open("todo_file.json") as read_file:
+            self.todos = json.load(read_file)
+        return self.todos
 
 
 todos = Todos()
-
-todos.from_json(todos_json)
-
-#with open(todo_file.json, "w+") as write_file:
-    #json.dump(data, write_file)
-
-#with open("todo_file.json") as read_file:
-    #a = json.load(read_file)
-
-# НЕ ЗНАЮ КАК ДАЛЬШЕ , НЕ ПОНИМАЮ
-
+todos.from_json(json.dumps(todos_json))
+print(len(todos))  # Выводит количество задач
+for todo in todos:
+    print(todo)  # Выводит информацию о каждой задаче
 
