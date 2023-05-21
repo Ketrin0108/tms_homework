@@ -75,9 +75,23 @@ class Todos:
         return self.todos
 
 
-todos = Todos()
-todos.from_json(json.dumps(todos_json))
+todos = Todos() # создаем экземпляр класса
+
+todos.from_json(todos_json) # заполняем список todo в классе Todos
+
 print(len(todos))  # Выводит количество задач
+
 for todo in todos:
-    print(todo)  # Выводит информацию о каждой задаче
+    print(todo)  # иттерация повсем todo
+
+todo_id = 1
+todo = todos.get_todo_by_id(todo_id) # получить todo по id
+
+if todo:
+    print(f"Todo with id {todo_id}: {todo}")
+else:
+    print(f"Todo with id {todo_id} not found")
+
+
+
 
