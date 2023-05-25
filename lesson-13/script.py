@@ -15,10 +15,9 @@ load_dotenv()
 URL= os.environ.get("URL")
 
 
-
 class Todo:
     def __init__(self, todo_id, user_id, title, completed):
-        seld.todo_id = todo_id
+        self.todo_id = todo_id
         self.user_id = user_id
         self.title = title
         self.completed = completed
@@ -31,7 +30,7 @@ class Todos:
     def __init__(self):
         self.todos = []
         for todo in requests.get(URL).json():
-            self.todos.append(Todo(todo_id = todo['id'], title = todo['title'],completed = todo['completed']))
+            self.todos.append(Todo(todo['id'], todo['userId'], todo['title'], todo['completed']))
         self.current = 0
 
     def __len__(self):
@@ -54,43 +53,55 @@ class Todos:
                 return todo
         return None
 
-    def from_json(self, json_data):
-        todos_data = json.loads(json_data)
+    def to_dict(self):
+        return [todo.__dict__ for todo in self.todos]
+
+    def from_dict(self, todos_data):
+        self.todos = []
         for todo_data in todos_data:
             todo = Todo(
-                todo_data['id'],
-                todo_data['userId'],
+                todo_data['todo_id'],
+                todo_data['user_id'],
                 todo_data['title'],
                 todo_data['completed']
             )
             self.todos.append(todo)
 
-    def serialis(self):
-        with open(todo_file.json, "w+") as write_file:
-            json.dump(self.todos, write_file)
+    def save_json(self, file_name):
+        with open(file_name, 'w') as f:
+            json.dump(self.to_dict(), f)
 
-    def desirialis(self):
-        with open("todo_file.json") as read_file:
-            self.todos = json.load(read_file)
-        return self.todos
+    def load_json(self, file_name):
+        with open(file_name, 'r') as f:
+            todos_data = json.load(f)
+            self.from_dict(todos_data)
 
 
 todos = Todos() # создаем экземпляр класса
 
-todos.from_json(todos_json) # заполняем список todo в классе Todos
+
 
 print(len(todos))  # Выводит количество задач
+
+todo_id = 10 # получаем todo по id
+todo = todos.get_todo_by_id (todo_id)
+print(f"Todo with id {todo_id}: {todo}")
+
 
 for todo in todos:
     print(todo)  # иттерация повсем todo
 
-todo_id = 1
-todo = todos.get_todo_by_id(todo_id) # получить todo по id
 
-if todo:
-    print(f"Todo with id {todo_id}: {todo}")
-else:
-    print(f"Todo with id {todo_id} not found")
+
+todos.save_json('todo.json') # сериализуем список todo в файл todo.json
+
+todos.load_json('todo.json') # загружаем список todo из файла todo.json
+
+
+# выводим список todo после загрузки из файла
+for todo in todos:
+    print(todo)
+
 
 
 
