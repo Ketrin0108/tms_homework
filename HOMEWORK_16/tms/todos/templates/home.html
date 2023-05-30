@@ -1,10 +1,25 @@
 html>
 <head>
-    <title>Home Page</title>
+    <title>Todo List</title>
 </head>
 <body>
-    <h1>Hello from todos app!</h1>
-    {% for todo in posts %}
-    {% endfor %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Completed</th>
+             </tr>
+        </thead>
+        <tbody>
+             {% for todo in todos %}
+             <tr>
+                 <td>{{todo.id}}</td>
+                 <td>{{title.id}}</td>
+                 <td>{{completed.id}}</td>
+             </tr>
+             {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

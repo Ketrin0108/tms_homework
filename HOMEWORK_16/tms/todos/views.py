@@ -1,19 +1,12 @@
 from django.http import JsonResponse
 from django.shortcuts import render
-
-from HOMEWORK_16.tms.tms.settings import TODOS_URL
-
-# Create your views here.
-TODOS_URL
-from django.shortcuts import render
-from dotenv import load_dotenv
-import os
 import requests
 import json
 
-load_dotenv()
+# Create your views here
 
-TODOS_URL= os.environ.get("TODOS_URL")
+RESPONSE = requests.get("https://jsonplaceholder.typicode.com/todos").json()
+
 
 class Todo:
     def __init__(self, todo_id, user_id, title, completed):
@@ -36,7 +29,7 @@ class Todos:
     def __len__(self):
         return len(self.todos)
 
-    def __iter__(self): # иттератор
+    def __iter__(self):  # иттератор
         return iter(self.todos)
 
     def __next__(self):
@@ -47,7 +40,7 @@ class Todos:
         else:
             raise StopIteration
 
-    def get_todo_by_id (self, todo_id): # возможность на todo по id
+    def get_todo_by_id(self, todo_id):  # возможность на todo по id
         for todo in self.todos:
             if todo.todo_id == todo_id:
                 return todo
@@ -76,16 +69,16 @@ class Todos:
             todos_data = json.load(f)
             self.from_dict(todos_data)
 
+
 def home(request):
     todos = Todos()
+    todos.from_dict()
     return render(request, 'home.html', {'todos': Todos})
 
 
-def posts(request):
-    return JsonResponse({'todos': Todos})
+def todo(request):
+    return JsonResponse({'todos.to_json': RESPONSE})
 
-
-from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render

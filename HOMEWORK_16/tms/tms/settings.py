@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-TODOS_URL = "https://jsonplaceholder.typicode.com/todos"
+
 
 # Application definition
 
