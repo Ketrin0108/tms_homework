@@ -6,7 +6,7 @@ import json
 # Create your views here
 
 RESPONSE = requests.get("https://jsonplaceholder.typicode.com/todos").json()
-
+URL="https://jsonplaceholder.typicode.com/todos"
 
 class Todo:
     def __init__(self, todo_id, user_id, title, completed):
@@ -22,14 +22,14 @@ class Todo:
 class Todos:
     def __init__(self):
         self.todos = []
-        for todo in requests.get(TODOS_URL).json():
+        for todo in requests.get(URL).json():
             self.todos.append(Todo(todo['id'], todo['userId'], todo['title'], todo['completed']))
         self.current = 0
 
     def __len__(self):
         return len(self.todos)
 
-    def __iter__(self):  # иттератор
+    def __iter__(self): # иттератор
         return iter(self.todos)
 
     def __next__(self):
@@ -40,7 +40,7 @@ class Todos:
         else:
             raise StopIteration
 
-    def get_todo_by_id(self, todo_id):  # возможность на todo по id
+    def get_todo_by_id (self, todo_id): # возможность на todo по id
         for todo in self.todos:
             if todo.todo_id == todo_id:
                 return todo
@@ -53,8 +53,8 @@ class Todos:
         self.todos = []
         for todo_data in todos_data:
             todo = Todo(
-                todo_data['todo_id'],
-                todo_data['user_id'],
+                todo_data['id'],
+                todo_data['userId'],
                 todo_data['title'],
                 todo_data['completed']
             )
@@ -69,18 +69,17 @@ class Todos:
             todos_data = json.load(f)
             self.from_dict(todos_data)
 
-
 def home(request):
     todos = Todos()
-    todos.from_dict()
-    return render(request, 'home.html', {'todos': Todos})
+    todos.from_dict(RESPONSE)
+    return render(request, 'home.html', {'todos': requests.get(URL).json()})
 
 
 def todo(request):
-    return JsonResponse({'todos.to_json': RESPONSE})
+    return JsonResponse({'todos': RESPONSE})
 
 
 # Create your views here.
-from django.shortcuts import render
+
 
 # Create your views here.
